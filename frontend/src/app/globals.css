@@ -1,3 +1,61 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
+
+:root {
+  --font-plus-jakarta: 'Plus Jakarta Sans', sans-serif;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #FAFAF9;
+  color: #1C1917;
+  font-family: var(--font-plus-jakarta), system-ui, sans-serif;
+  overscroll-behavior: none;
+}
+
+/* ── Scrollbar (thin & subtle) ── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #D6D3D1; border-radius: 99px; }
+
+/* ── Swipe card drag cursor ── */
+.drag-card { cursor: grab; }
+.drag-card:active { cursor: grabbing; }
+
+/* ── Gradient text ── */
+.gradient-text {
+  background: linear-gradient(135deg, #7C3AED 0%, #DB2777 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Glass surface ── */
+.glass {
+  background: rgba(255,255,255,.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* ── Safe area for mobile bottom nav ── */
+.pb-nav { padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
+
+/* ── Input reset ── */
+input, textarea, select {
+  outline: none;
+}
+
+/* ── Smooth transitions on interactive elements ── */
+button, a {
+  transition: all .15s ease;
+}
