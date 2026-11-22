@@ -17,9 +17,7 @@ const CAT_LABELS: Record<string, string> = {
 
 export default function FeedPage() {
   const [filter, setFilter] = useState("Semua");
-  const [cards, setCards] = useState<GroupCard[]>(() =>
-    MOCK_GROUPS.filter((g) => g.status !== "full" && g.status !== "closed" || !("status" in g))
-  );
+  const [cards, setCards] = useState<GroupCard[]>(() => MOCK_GROUPS);
   const [swiped, setSwiped] = useState<{ id: string; dir: "left" | "right" }[]>([]);
 
   const filtered = cards.filter((c) => filter === "Semua" || c.category === filter);

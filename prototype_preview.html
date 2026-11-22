@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OnlyPeer — Interactive Prototype Preview</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: radial-gradient(circle at 50% 10%, #2e1065 0%, #0f172a 100%);
+    }
+    .mobile-frame {
+      width: 390px;
+      height: 844px;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7), 0 0 0 12px #1e293b, 0 0 0 14px #334155;
+    }
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .swipe-card {
+      transition: transform 0.25s ease, opacity 0.25s ease;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4 text-slate-100">
+
+  <!-- Header Info -->
+  <header class="text-center mb-6 max-w-xl">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-900/60 border border-violet-500/30 text-violet-300 text-xs font-semibold mb-2">
+      <span>✨</span> GDG ITB Hackathon 2026 — Interactive Prototype
+    </div>
+    <h1 class="text-3xl font-extrabold text-white">OnlyPeer 🎓👥</h1>
+    <p class="text-sm text-slate-400 mt-1">
+      Tinder for group work at ITB — swipe on groups, talk first, then join.
+    </p>
+    <div class="mt-3 flex items-center justify-center gap-2 text-xs text-slate-400">
+      <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+      Klik tombol tab di bawah HP untuk coba semua flow: <b>Jelajah</b>, <b>Lamaran</b>, <b>Chat + AI</b>, <b>Profil</b>, <b>Buat</b>
+    </div>
+  </header>
+
+  <!-- Phone Frame Mockup -->
+  <div class="mobile-frame bg-stone-50 rounded-[48px] overflow-hidden flex flex-col relative text-stone-900">
+    
+    <!-- Phone Top Island / Notch -->
+    <div class="h-10 bg-white/80 backdrop-blur shrink-0 flex items-center justify-between px-7 pt-2 select-none border-b border-stone-200/50 z-50">
+      <span class="text-xs font-bold text-stone-800">09:41</span>
+      <div class="w-24 h-5 bg-stone-900 rounded-full flex items-center justify-center">
+        <div class="w-2.5 h-2.5 bg-stone-800 rounded-full ml-auto mr-2"></div>
+      </div>
+      <div class="flex items-center gap-1.5 text-stone-800 text-xs">
+        <span>📶</span>
+        <span>🔋</span>
+      </div>
+    </div>
+
+    <!-- Screen Container -->
+    <div class="flex-1 overflow-hidden relative flex flex-col">
+
+      <!-- ================= SCREEN 1: FEED ================= -->
+      <div id="screen-feed" class="screen flex-1 flex flex-col h-full bg-stone-50">
+        <!-- Top App Bar -->
+        <div class="p-4 bg-white/90 backdrop-blur border-b border-stone-200 shrink-0">
+          <div class="flex items-center justify-between">
+            <div>
+              <h2 class="text-lg font-black text-stone-900">Jelajah Kelompok</h2>
+              <p class="text-xs text-stone-500">6 kelompok cocok dengan profilmu</p>
+            </div>
+            <div class="h-8 w-8 rounded-full bg-violet-100 text-violet-700 flex items-center justify-center font-bold text-xs">
+              RM
+            </div>
+          </div>
+
+          <!-- Category filter -->
+          <div class="flex gap-1.5 mt-3 overflow-x-auto hide-scrollbar pb-1">
+            <button class="px-3 py-1 rounded-full text-xs font-bold bg-violet-600 text-white shadow-sm shrink-0">Semua</button>
+            <button class="px-3 py-1 rounded-full text-xs font-semibold bg-stone-100 text-stone-600 hover:bg-stone-200 shrink-0">📚 Tugas Kuliah</button>
+            <button class="px-3 py-1 rounded-full text-xs font-semibold bg-stone-100 text-stone-600 hover:bg-stone-200 shrink-0">🏆 Kompetisi</button>
+            <button class="px-3 py-1 rounded-full text-xs font-semibold bg-stone-100 text-stone-600 hover:bg-stone-200 shrink-0">🤝 Study</button>
+          </div>
+        </div>
+
+        <!-- AI Match Banner -->
+        <div class="mx-4 mt-2 p-2.5 rounded-xl bg-violet-50 border border-violet-100 flex items-center gap-2 text-xs text-violet-800">
+          <span class="text-base">✨</span>
+          <span class="font-medium">Diurutkan AI Gemini berdasarkan skill <b>PostgreSQL, Python</b> & semestermu.</span>
+        </div>
+
+        <!-- Card Deck Area -->
+        <div class="flex-1 p-4 relative flex items-center justify-center overflow-hidden">
+          
+          <!-- Card 1 (Active) -->
+          <div id="active-card" class="swipe-card w-full bg-white rounded-3xl p-5 shadow-xl border border-stone-100 flex flex-col space-y-3 relative">
+            <div class="flex items-center justify-between">
+              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-violet-100 text-violet-700">📚 Tugas Kuliah</span>
+              <span class="text-xs font-mono font-bold bg-stone-100 text-stone-600 px-2 py-0.5 rounded">IF3140</span>
+            </div>
+
+            <h3 class="text-base font-extrabold text-stone-900 leading-snug">
+              Tubes MBD — nyari backend dev yang gak ngilang
+            </h3>
+
+            <div class="flex items-center gap-2 text-xs text-stone-500">
+              <span class="bg-stone-100 px-2 py-0.5 rounded-md font-medium">👥 3/4 anggota</span>
+              <span class="bg-stone-100 px-2 py-0.5 rounded-md font-medium">🎯 Target A</span>
+              <span class="bg-stone-100 px-2 py-0.5 rounded-md font-medium">⏱ 10j/mgg</span>
+            </div>
+
+            <p class="text-xs text-stone-600 leading-relaxed line-clamp-3">
+              Kelompok buat Tubes IF3140 Basis Data. Kita udah ada frontend (Next.js), butuh 1 orang yang kuat di SQL & normalisasi data. Target A, gak mau lembur tiap malem!
+            </p>
+
+            <div>
+              <p class="text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-1">Yang dibutuhin</p>
+              <div class="flex flex-wrap gap-1">
+                <span class="px-2 py-0.5 rounded-md bg-stone-100 text-stone-700 text-[11px] font-semibold">PostgreSQL</span>
+                <span class="px-2 py-0.5 rounded-md bg-stone-100 text-stone-700 text-[11px] font-semibold">SQL</span>
+                <span class="px-2 py-0.5 rounded-md bg-stone-100 text-stone-700 text-[11px] font-semibold">Python</span>
+              </div>
+            </div>
+
+            <!-- Gemini AI Rationale Badge -->
+            <div class="p-2.5 rounded-xl bg-violet-50 border border-violet-100 text-xs text-violet-900 flex items-start gap-1.5">
+              <span>✨</span>
+              <p class="text-[11px] font-semibold leading-tight">
+                <b>Alasan Cocok:</b> Kamu punya PostgreSQL & Python — persis kriteria Daffa, plus sama-sama IF 2022.
+              </p>
+            </div>
+
+            <div class="pt-2 border-t border-stone-100 flex items-center justify-between text-xs text-stone-500">
+              <span>Leader: <b>Daffa Ariq Pramudya</b></span>
+              <button onclick="goToGroupDetail()" class="text-violet-600 font-bold hover:underline">Detail →</button>
+            </div>
+
+            <!-- Swipe Action Buttons -->
+            <div class="grid grid-cols-2 gap-3 pt-2">
+              <button onclick="simulateSwipe('left')" class="py-2.5 rounded-xl border border-rose-200 text-rose-600 font-bold text-xs hover:bg-rose-50 flex items-center justify-center gap-1">
+                ✕ SKIP
+              </button>
+              <button onclick="simulateSwipe('right')" class="py-2.5 rounded-xl bg-violet-600 text-white font-bold text-xs shadow-md hover:bg-violet-700 flex items-center justify-center gap-1">
+                ♥ MAU MASUK!
+              </button>
+            </div>
+          </div>
+
+          <!-- Empty State (hidden by default) -->
+          <div id="empty-feed" class="hidden text-center p-6 space-y-3">
+            <span class="text-4xl">🎉</span>
+            <h4 class="font-extrabold text-stone-900">Semua grup udah dijelajahi!</h4>
+            <p class="text-xs text-stone-500">Lamaranmu sedang ditinjau oleh leader. Cek status di tab Lamaran.</p>
+            <button onclick="switchTab('requests')" class="px-4 py-2 bg-violet-600 text-white rounded-xl text-xs font-bold shadow">
+              Buka Tab Lamaran
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ================= SCREEN 2: REQUESTS ================= -->
+      <div id="screen-requests" class="screen hidden flex-1 flex flex-col h-full bg-stone-50">
+        <div class="p-4 bg-white border-b border-stone-200">
+          <h2 class="text-lg font-black text-stone-900">Lamaran & Undangan</h2>
+          <div class="flex gap-2 mt-2">
+            <button class="flex-1 py-1.5 text-xs font-bold text-violet-600 border-b-2 border-violet-600">Masuk (Leader View)</button>
+            <button class="flex-1 py-1.5 text-xs font-semibold text-stone-400">Keluarku (Seeker View)</button>
+          </div>
+        </div>
+
+        <div class="p-4 space-y-3 flex-1 overflow-y-auto">
+          <!-- Request Item 1 -->
+          <div class="bg-white p-4 rounded-2xl border border-stone-200 shadow-sm space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 text-[10px] font-bold">MENUNGGU</span>
+              <span class="text-[10px] text-stone-400">10 menit lalu</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-rose-500 text-white flex items-center justify-center font-bold text-sm">
+                NZ
+              </div>
+              <div class="flex-1 min-w-0">
+                <h4 class="text-sm font-bold text-stone-900 truncate">Nabila Zahra Santoso</h4>
+                <p class="text-xs text-stone-500">STI 2022 · Tubes MBD IF3140</p>
+              </div>
+            </div>
+            <div class="flex gap-1 text-[10px]">
+              <span class="bg-stone-100 px-2 py-0.5 rounded font-medium">Figma</span>
+              <span class="bg-stone-100 px-2 py-0.5 rounded font-medium">React</span>
+              <span class="bg-stone-100 px-2 py-0.5 rounded font-medium">Tailwind</span>
+            </div>
+            <button onclick="goToChat()" class="w-full py-2 bg-violet-600 text-white text-xs font-bold rounded-xl shadow hover:bg-violet-700">
+              Buka Chat & Review AI Report →
+            </button>
+          </div>
+
+          <!-- Request Item 2 -->
+          <div class="bg-white p-4 rounded-2xl border border-stone-200 shadow-sm space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 text-[10px] font-bold">SEDANG CHAT</span>
+              <span class="text-[10px] text-stone-400">Kemarin</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold text-sm">
+                SR
+              </div>
+              <div class="flex-1 min-w-0">
+                <h4 class="text-sm font-bold text-stone-900 truncate">Siska Rahmawati</h4>
+                <p class="text-xs text-stone-500">IF 2022 · Tubes PPL</p>
+              </div>
+            </div>
+            <button onclick="goToChat()" class="w-full py-2 bg-stone-100 text-stone-700 text-xs font-bold rounded-xl hover:bg-stone-200">
+              Lanjutkan Obrolan →
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= SCREEN 3: CHAT + AI FIT REPORT ================= -->
+      <div id="screen-chat" class="screen hidden flex-1 flex flex-col h-full bg-stone-50">
+        <!-- Chat Header -->
+        <div class="p-3 bg-white border-b border-stone-200 flex items-center gap-3 shrink-0">
+          <button onclick="switchTab('requests')" class="text-sm font-bold text-stone-500">←</button>
+          <div class="w-8 h-8 rounded-full bg-rose-500 text-white flex items-center justify-center text-xs font-bold">
+            NZ
+          </div>
+          <div class="flex-1 min-w-0">
+            <h4 class="text-xs font-bold text-stone-900 truncate">Nabila Zahra Santoso</h4>
+            <p class="text-[10px] text-stone-500 truncate">Melamar: Tubes MBD IF3140</p>
+          </div>
+          <button onclick="toggleAiDrawer()" class="px-2.5 py-1 bg-violet-100 text-violet-800 text-[11px] font-bold rounded-lg flex items-center gap-1">
+            <span>✨</span> AI Report
+          </button>
+        </div>
+
+        <!-- AI Fit Report Drawer (collapsible) -->
+        <div id="ai-drawer" class="p-3 bg-violet-50 border-b border-violet-200 text-xs text-stone-800 space-y-2 shrink-0">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-violet-900 flex items-center gap-1">🤖 Gemini Candidate Fit Report</span>
+            <span class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">Match: 92%</span>
+          </div>
+          <div class="space-y-1 text-[11px]">
+            <p class="text-emerald-700"><b>✅ Kecocokan:</b> Skill React + UI kuat, satu angkatan IF/STI, target nilai sama-sama A.</p>
+            <p class="text-amber-700"><b>⚠️ Perlu Dicek:</b> Pengalaman SQL & query kompleks belum tertera di resume.</p>
+            <p class="text-violet-700"><b>💬 Rekomendasi Pertanyaan:</b> "Pernah bikin query SQL kompleks pakai JOIN?"</p>
+          </div>
+        </div>
+
+        <!-- Message History -->
+        <div id="chat-messages" class="flex-1 p-3 overflow-y-auto space-y-2.5">
+          <div class="flex justify-start">
+            <div class="max-w-[78%] bg-white p-2.5 rounded-2xl rounded-bl-none text-xs text-stone-800 shadow-sm border border-stone-100">
+              Halo Daffa! Aku liat kelompokmu butuh frontend React yang paham UI buat Tubes MBD. Aku udah pernah megang Zustand.
+              <span class="block text-[9px] text-stone-400 mt-1">16:05</span>
+            </div>
+          </div>
+
+          <div class="flex justify-end">
+            <div class="max-w-[78%] bg-violet-600 p-2.5 rounded-2xl rounded-br-none text-xs text-white shadow-sm">
+              Hai Nabila! Pas banget. Di kelompok ini kita targetnya A ya, dan standup mingguan tiap Senin malam. Aman?
+              <span class="block text-[9px] text-violet-200 mt-1">16:10</span>
+            </div>
+          </div>
+
+          <div class="flex justify-start">
+            <div class="max-w-[78%] bg-white p-2.5 rounded-2xl rounded-bl-none text-xs text-stone-800 shadow-sm border border-stone-100">
+              Aman banget! Aku sengaja cari tim yang emang mau ngejar A. Kapan kira-kira mulai kickoff?
+              <span class="block text-[9px] text-stone-400 mt-1">16:12</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Decision Action Bar (Leader Only) -->
+        <div id="decision-bar" class="p-2.5 bg-white border-t border-stone-200 grid grid-cols-2 gap-2 shrink-0">
+          <button onclick="approveCandidate()" class="py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1 shadow">
+            ✅ Terima ke Kelompok
+          </button>
+          <button onclick="rejectCandidate()" class="py-2 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-xl text-xs font-bold border border-rose-200">
+            ✕ Tolak Lamaran
+          </button>
+        </div>
+
+        <!-- Approved Banner (hidden) -->
+        <div id="approved-banner" class="hidden p-3 bg-emerald-100 border-t border-emerald-300 text-center text-xs font-bold text-emerald-800 shrink-0">
+          🎉 Nabila resmi bergabung ke kelompok! Slot kelompok bertambah (4/4 Penuh).
+        </div>
+
+        <!-- Input Bar -->
+        <div class="p-2 bg-stone-100 flex items-center gap-2 shrink-0">
+          <input id="chat-input" type="text" placeholder="Ketik pesan..." onkeydown="if(event.key==='Enter') sendChatMessage()" class="flex-1 bg-white border border-stone-200 rounded-full px-3.5 py-1.5 text-xs outline-none focus:ring-1 focus:ring-violet-500">
+          <button onclick="sendChatMessage()" class="w-8 h-8 rounded-full bg-violet-600 text-white text-xs flex items-center justify-center">
+            ➤
+          </button>
+        </div>
+      </div>
+
+      <!-- ================= SCREEN 4: PROFILE ================= -->
+      <div id="screen-profile" class="screen hidden flex-1 flex flex-col h-full bg-stone-50 overflow-y-auto p-4 space-y-4">
+        <div class="bg-white p-5 rounded-3xl border border-stone-200 shadow-sm text-center">
+          <div class="w-16 h-16 rounded-full bg-violet-600 text-white text-xl font-black mx-auto flex items-center justify-center shadow-lg">
+            RM
+          </div>
+          <h3 class="text-base font-extrabold text-stone-900 mt-3">Reza Mahendra</h3>
+          <p class="text-xs text-stone-500">reza.mahendra@mahasiswa.itb.ac.id</p>
+          <p class="text-xs font-semibold text-violet-700 mt-1">Teknik Informatika · Angkatan 2022</p>
+          <p class="text-xs text-stone-600 mt-3 italic bg-stone-50 p-2.5 rounded-xl border border-stone-100">
+            "Suka ngoprek backend dan arsitektur sistem. Nyari tim tubes yang terstruktur dan gak deadliner."
+          </p>
+        </div>
+
+        <div class="bg-white p-4 rounded-2xl border border-stone-200 shadow-sm space-y-2">
+          <h4 class="text-xs font-bold text-stone-400 uppercase tracking-wider">Keahlian & Tag</h4>
+          <div class="flex flex-wrap gap-1.5">
+            <span class="px-2.5 py-1 rounded-lg bg-stone-100 text-stone-800 text-xs font-semibold">Python</span>
+            <span class="px-2.5 py-1 rounded-lg bg-stone-100 text-stone-800 text-xs font-semibold">FastAPI</span>
+            <span class="px-2.5 py-1 rounded-lg bg-stone-100 text-stone-800 text-xs font-semibold">PostgreSQL</span>
+            <span class="px-2.5 py-1 rounded-lg bg-stone-100 text-stone-800 text-xs font-semibold">Docker</span>
+            <span class="px-2.5 py-1 rounded-lg bg-stone-100 text-stone-800 text-xs font-semibold">Git</span>
+          </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-2xl border border-stone-200 shadow-sm space-y-2">
+          <h4 class="text-xs font-bold text-stone-400 uppercase tracking-wider">Mata Kuliah Semester Ini</h4>
+          <div class="space-y-1.5 text-xs">
+            <div class="flex justify-between items-center bg-stone-50 p-2 rounded-lg">
+              <span class="font-bold">IF3140</span>
+              <span class="text-stone-600">Manajemen Basis Data</span>
+            </div>
+            <div class="flex justify-between items-center bg-stone-50 p-2 rounded-lg">
+              <span class="font-bold">IF3170</span>
+              <span class="text-stone-600">Kecerdasan Buatan</span>
+            </div>
+            <div class="flex justify-between items-center bg-stone-50 p-2 rounded-lg">
+              <span class="font-bold">IF3250</span>
+              <span class="text-stone-600">Proyek Perangkat Lunak</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-2xl border border-stone-200 shadow-sm flex items-center justify-between">
+          <div>
+            <h4 class="text-xs font-bold text-stone-900">Curriculum Vitae (PDF)</h4>
+            <p class="text-[11px] text-stone-400">Privat · Hanya bisa dilihat leader saat kamu melamar</p>
+          </div>
+          <span class="text-xs font-bold text-violet-600">Terunggah ✓</span>
+        </div>
+      </div>
+
+      <!-- ================= SCREEN 5: CREATE GROUP ================= -->
+      <div id="screen-create" class="screen hidden flex-1 flex flex-col h-full bg-stone-50 overflow-y-auto p-4 space-y-3">
+        <h2 class="text-lg font-black text-stone-900">Buat Lowongan Kelompok</h2>
+        <p class="text-xs text-stone-500">Cari anggota tim yang punya komitmen dan kualifikasi setara.</p>
+
+        <div class="space-y-3 text-xs">
+          <div>
+            <label class="block font-bold text-stone-700 mb-1">Judul Kelompok</label>
+            <input type="text" placeholder="cth: Tubes Jarkom — nyari 1 orang" class="w-full p-2.5 rounded-xl border border-stone-300 bg-white">
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block font-bold text-stone-700 mb-1">Kategori</label>
+              <select class="w-full p-2.5 rounded-xl border border-stone-300 bg-white">
+                <option>Tugas Kuliah</option>
+                <option>Kompetisi / Hackathon</option>
+                <option>Event / Panitia</option>
+                <option>Study Group</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-bold text-stone-700 mb-1">Kode Matkul</label>
+              <input type="text" placeholder="IF3130" class="w-full p-2.5 rounded-xl border border-stone-300 bg-white uppercase">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block font-bold text-stone-700 mb-1">Target Nilai</label>
+              <select class="w-full p-2.5 rounded-xl border border-stone-300 bg-white">
+                <option>A</option>
+                <option>A-</option>
+                <option>B</option>
+                <option>Lulus aja</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-bold text-stone-700 mb-1">Kapasitas</label>
+              <select class="w-full p-2.5 rounded-xl border border-stone-300 bg-white">
+                <option>3 Orang</option>
+                <option selected>4 Orang</option>
+                <option>5 Orang</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="block font-bold text-stone-700 mb-1">Keahlian Yang Dibutuhkan</label>
+            <input type="text" placeholder="Python, Wireshark, C++" class="w-full p-2.5 rounded-xl border border-stone-300 bg-white">
+          </div>
+
+          <div>
+            <label class="block font-bold text-stone-700 mb-1">Deskripsi & Aturan Main Tim</label>
+            <textarea rows="3" placeholder="Jelaskan ekspektasi kerja..." class="w-full p-2.5 rounded-xl border border-stone-300 bg-white"></textarea>
+          </div>
+
+          <button onclick="publishGroup()" class="w-full py-3 bg-violet-600 text-white rounded-xl font-bold shadow-md hover:bg-violet-700 mt-2">
+            🚀 Terbitkan Lowongan
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Phone Bottom Navigation Bar -->
+    <nav class="h-16 bg-white/95 backdrop-blur border-t border-stone-200 shrink-0 flex items-center justify-around px-2 z-50">
+      <button onclick="switchTab('feed')" id="nav-feed" class="flex flex-col items-center gap-1 text-violet-600 text-[10px] font-bold">
+        <span class="text-base">🏠</span>
+        <span>Jelajah</span>
+      </button>
+      <button onclick="switchTab('create')" id="nav-create" class="flex flex-col items-center gap-1 text-stone-400 text-[10px] font-semibold hover:text-stone-700">
+        <span class="text-base">➕</span>
+        <span>Buat</span>
+      </button>
+      <button onclick="switchTab('requests')" id="nav-requests" class="flex flex-col items-center gap-1 text-stone-400 text-[10px] font-semibold hover:text-stone-700 relative">
+        <span class="text-base">💬</span>
+        <span>Lamaran</span>
+        <span class="absolute top-0 right-1 w-2 h-2 rounded-full bg-rose-500"></span>
+      </button>
+      <button onclick="switchTab('profile')" id="nav-profile" class="flex flex-col items-center gap-1 text-stone-400 text-[10px] font-semibold hover:text-stone-700">
+        <span class="text-base">👤</span>
+        <span>Profil</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <!-- Instructions on bottom -->
+  <footer class="mt-4 text-center text-xs text-slate-400">
+    <p>💡 <b>Tips Video Demo:</b> Rekam layar frame HP di atas dengan OBS atau QuickTime untuk presentasi hackathon yang estetik!</p>
+  </footer>
+
+  <script>
+    function switchTab(tab) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+      document.getElementById('screen-' + tab).classList.remove('hidden');
+
+      // Update nav styling
+      const tabs = ['feed', 'create', 'requests', 'profile'];
+      tabs.forEach(t => {
+        const btn = document.getElementById('nav-' + t);
+        if (btn) {
+          if (t === tab) {
+            btn.className = 'flex flex-col items-center gap-1 text-violet-600 text-[10px] font-bold';
+          } else {
+            btn.className = 'flex flex-col items-center gap-1 text-stone-400 text-[10px] font-semibold hover:text-stone-700 relative';
+          }
+        }
+      });
+    }
+
+    function simulateSwipe(dir) {
+      const card = document.getElementById('active-card');
+      if (!card) return;
+
+      if (dir === 'right') {
+        card.style.transform = 'translateX(300px) rotate(20deg)';
+        card.style.opacity = '0';
+      } else {
+        card.style.transform = 'translateX(-300px) rotate(-20deg)';
+        card.style.opacity = '0';
+      }
+
+      setTimeout(() => {
+        card.classList.add('hidden');
+        document.getElementById('empty-feed').classList.remove('hidden');
+      }, 250);
+    }
+
+    function goToChat() {
+      switchTab('requests');
+      document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+      document.getElementById('screen-chat').classList.remove('hidden');
+    }
+
+    function toggleAiDrawer() {
+      const d = document.getElementById('ai-drawer');
+      d.classList.toggle('hidden');
+    }
+
+    function sendChatMessage() {
+      const input = document.getElementById('chat-input');
+      const val = input.value.trim();
+      if (!val) return;
+
+      const container = document.getElementById('chat-messages');
+      const msgDiv = document.createElement('div');
+      msgDiv.className = 'flex justify-end';
+      msgDiv.innerHTML = `
+        <div class="max-w-[78%] bg-violet-600 p-2.5 rounded-2xl rounded-br-none text-xs text-white shadow-sm">
+          ${val}
+          <span class="block text-[9px] text-violet-200 mt-1">Baru saja</span>
+        </div>
+      `;
+      container.appendChild(msgDiv);
+      input.value = '';
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function approveCandidate() {
+      document.getElementById('decision-bar').classList.add('hidden');
+      document.getElementById('approved-banner').classList.remove('hidden');
+      alert("🎉 Nabila Zahra resmi disetujui bergabung ke kelompok Tubes MBD!");
+    }
+
+    function rejectCandidate() {
+      alert("Lamaran ditolak.");
+      switchTab('requests');
+    }
+
+    function publishGroup() {
+      alert("🚀 Lowongan kelompok berhasil diterbitkan!");
+      switchTab('feed');
+    }
+  </script>
+</body>
+</html>

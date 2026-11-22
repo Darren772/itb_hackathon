@@ -40,6 +40,7 @@ export interface GroupCard {
   ai_reason: string | null; // "Why this group" (AI-02)
   ai_score: number | null;
   created_at: string;
+  status?: GroupStatus;
 }
 
 export interface JoinRequest {
